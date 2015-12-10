@@ -1,0 +1,531 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        12/10/2015  19:45:09  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\PROGRAM FILES\IDE\KEILC51\C51\BIN\BL51.EXE STARTUP.obj, digitron.obj, main.obj, DS1302.obj TO digitron RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  STARTUP.obj (?C_STARTUP)
+  digitron.obj (DIGITRON)
+  main.obj (MAIN)
+  DS1302.obj (DS1302)
+  D:\PROGRAM FILES\IDE\KEILC51\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  digitron (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     000CH     UNIT         ?DT?DS1302
+            DATA    0014H     0002H     UNIT         ?DT?MAIN
+            DATA    0016H     0002H     UNIT         _DATA_GROUP_
+                    0018H     0008H                  *** GAP ***
+            BIT     0020H.0   0000H.1   UNIT         _BIT_GROUP_
+                    0020H.1   0000H.7                *** GAP ***
+            IDATA   0021H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0008H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     008CH     UNIT         ?C_C51STARTUP
+            CODE    009AH     005DH     UNIT         ?PR?DISPLAYCALENDAR?DS1302
+            CODE    00F7H     0041H     UNIT         ?PR?_DIGOUTPUT?DIGITRON
+            CODE    0138H     0038H     UNIT         ?PR?SETTIMECALENDAR?DS1302
+            CODE    0170H     0036H     UNIT         ?PR?_DIGSHOWNUMBER?DIGITRON
+            CODE    01A6H     0036H     UNIT         ?PR?DISPLAYTIME?DS1302
+            CODE    01DCH     0035H     UNIT         ?PR?TEST?DS1302
+            CODE    0211H     0026H     UNIT         ?PR?TIMER0INTERRUPT?MAIN
+            CODE    0237H     001FH     UNIT         ?PR?_TRANSMITBYTE?DS1302
+            CODE    0256H     001DH     UNIT         ?PR?_DIGSHOWCUSTOM?DIGITRON
+            CODE    0273H     001AH     UNIT         ?PR?RECEIVEBYTE?DS1302
+            CODE    028DH     0016H     UNIT         ?PR?READCALENDAR?DS1302
+            CODE    02A3H     0013H     UNIT         ?CO?DIGITRON
+            CODE    02B6H     0011H     UNIT         ?PR?DELAY1S?MAIN
+            CODE    02C7H     0011H     UNIT         ?PR?MAIN?MAIN
+            CODE    02D8H     0010H     UNIT         ?PR?INITTIMER0?MAIN
+            CODE    02E8H     000FH     UNIT         ?C_INITSEG
+            CODE    02F7H     000FH     UNIT         ?PR?READTIME?DS1302
+            CODE    0306H     000DH     UNIT         ?PR?DIGINIT?DIGITRON
+            CODE    0313H     000BH     UNIT         ?PR?_WRITEDS1302?DS1302
+            CODE    031EH     0009H     UNIT         ?PR?_READDS1302?DS1302
+
+
+BL51 BANKED LINKER/LOCATER V6.22                                                      12/10/2015  19:45:09  PAGE 2
+
+
+
+OVERLAY MAP OF MODULE:   digitron (?C_STARTUP)
+
+
+SEGMENT                                BIT_GROUP          DATA_GROUP 
+  +--> CALLED SEGMENT               START    LENGTH     START    LENGTH
+-----------------------------------------------------------------------
+?C_C51STARTUP                       -----    -----      -----    -----
+  +--> ?PR?MAIN?MAIN
+  +--> ?C_INITSEG
+
+?PR?MAIN?MAIN                       -----    -----      0016H    0002H
+  +--> ?PR?DIGINIT?DIGITRON
+  +--> ?PR?SETTIMECALENDAR?DS1302
+  +--> ?PR?INITTIMER0?MAIN
+  +--> ?PR?READTIME?DS1302
+  +--> ?PR?DISPLAYTIME?DS1302
+
+?PR?DIGINIT?DIGITRON                -----    -----      -----    -----
+  +--> ?PR?_DIGOUTPUT?DIGITRON
+
+?PR?SETTIMECALENDAR?DS1302          -----    -----      -----    -----
+  +--> ?PR?_WRITEDS1302?DS1302
+
+?PR?_WRITEDS1302?DS1302             -----    -----      -----    -----
+  +--> ?PR?_TRANSMITBYTE?DS1302
+
+?PR?READTIME?DS1302                 -----    -----      -----    -----
+  +--> ?PR?_READDS1302?DS1302
+
+?PR?_READDS1302?DS1302              -----    -----      -----    -----
+  +--> ?PR?_TRANSMITBYTE?DS1302
+  +--> ?PR?RECEIVEBYTE?DS1302
+
+?PR?DISPLAYTIME?DS1302              -----    -----      -----    -----
+  +--> ?PR?_DIGSHOWNUMBER?DIGITRON
+
+?PR?_DIGSHOWNUMBER?DIGITRON         0020H.0  0000H.1    -----    -----
+  +--> ?CO?DIGITRON
+  +--> ?PR?_DIGOUTPUT?DIGITRON
+
+
+
+SYMBOL TABLE OF MODULE:  digitron (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:000EH         SEGMENT       ?C_C51STARTUP
+  I:0021H         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+BL51 BANKED LINKER/LOCATER V6.22                                                      12/10/2015  19:45:09  PAGE 3
+
+
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:0011H         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0100H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:000EH         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         126
+  C:000EH         LINE#         133
+  C:0010H         LINE#         134
+  C:0011H         LINE#         135
+  C:0012H         LINE#         136
+  C:0014H         LINE#         185
+  C:0017H         LINE#         196
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        DIGITRON
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  C:0170H         PUBLIC        _DigShowNumber
+  C:00F7H         PUBLIC        _DigOutput
+  C:0306H         PUBLIC        DigInit
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:0256H         PUBLIC        _DigShowCustom
+  B:0080H.2       PUBLIC        DIG_DATA
+  C:02A3H         PUBLIC        Segment
+  C:02ADH         PUBLIC        Select
+  B:0080H.4       PUBLIC        DIG_SHCP
+  D:00C8H         PUBLIC        T2CON
+  B:00A0H.3       PUBLIC        DIG_STCP
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          _DIGOUTPUT
+  D:0007H         SYMBOL        SelectByte
+  D:0005H         SYMBOL        SegmentByte
+  -------         DO            
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+  C:00F7H         LINE#         16
+  C:00F7H         LINE#         17
+  C:00F7H         LINE#         20
+  C:00F9H         LINE#         21
+  C:00FBH         LINE#         24
+BL51 BANKED LINKER/LOCATER V6.22                                                      12/10/2015  19:45:09  PAGE 4
+
+
+  C:00FDH         LINE#         25
+  C:00FDH         LINE#         27
+  C:0101H         LINE#         28
+  C:0101H         LINE#         29
+  C:0103H         LINE#         30
+  C:0105H         LINE#         32
+  C:0105H         LINE#         33
+  C:0107H         LINE#         34
+  C:0107H         LINE#         35
+  C:0108H         LINE#         37
+  C:010AH         LINE#         38
+  C:010BH         LINE#         39
+  C:010DH         LINE#         40
+  C:010EH         LINE#         42
+  C:0112H         LINE#         43
+  C:0116H         LINE#         45
+  C:0118H         LINE#         46
+  C:0118H         LINE#         47
+  C:011CH         LINE#         48
+  C:011CH         LINE#         49
+  C:011EH         LINE#         50
+  C:0120H         LINE#         52
+  C:0120H         LINE#         53
+  C:0122H         LINE#         54
+  C:0122H         LINE#         55
+  C:0123H         LINE#         56
+  C:0125H         LINE#         57
+  C:0126H         LINE#         58
+  C:0128H         LINE#         59
+  C:0129H         LINE#         60
+  C:012DH         LINE#         61
+  C:0131H         LINE#         63
+  C:0133H         LINE#         64
+  C:0134H         LINE#         65
+  C:0136H         LINE#         66
+  C:0137H         LINE#         67
+  -------         ENDPROC       _DIGOUTPUT
+  -------         PROC          _DIGSHOWCUSTOM
+  D:0007H         SYMBOL        DigSelect
+  D:0005H         SYMBOL        CustomSeg
+  C:0256H         LINE#         80
+  C:0256H         LINE#         81
+  C:0256H         LINE#         82
+  C:0269H         LINE#         83
+  C:0269H         LINE#         84
+  C:0272H         LINE#         85
+  C:0272H         LINE#         86
+  -------         ENDPROC       _DIGSHOWCUSTOM
+  -------         PROC          _DIGSHOWNUMBER
+  D:0004H         SYMBOL        DigSelect
+  D:0006H         SYMBOL        Number
+  B:0020H.0       SYMBOL        Dp
+  C:0170H         LINE#         99
+  C:0174H         LINE#         100
+  C:0174H         LINE#         101
+  C:018DH         LINE#         102
+  C:018DH         LINE#         103
+BL51 BANKED LINKER/LOCATER V6.22                                                      12/10/2015  19:45:09  PAGE 5
+
+
+  C:019BH         LINE#         104
+  C:019BH         LINE#         105
+  C:019DH         LINE#         106
+  C:019FH         LINE#         108
+  C:019FH         LINE#         109
+  C:01A5H         LINE#         110
+  C:01A5H         LINE#         111
+  C:01A5H         LINE#         112
+  -------         ENDPROC       _DIGSHOWNUMBER
+  -------         PROC          DIGINIT
+  C:0306H         LINE#         124
+  C:0306H         LINE#         125
+  C:0306H         LINE#         126
+  C:0308H         LINE#         127
+  C:030AH         LINE#         128
+  C:030CH         LINE#         129
+  -------         ENDPROC       DIGINIT
+  -------         ENDMOD        DIGITRON
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  C:0211H         PUBLIC        Timer0Interrupt
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  D:0014H         PUBLIC        gDp
+  C:02C7H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  C:02B6H         PUBLIC        delay1s
+  B:00A8H.1       PUBLIC        ET0
+  C:02D8H         PUBLIC        InitTimer0
+  D:0015H         PUBLIC        gCounter
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          DELAY1S
+  -------         DO            
+  D:0007H         SYMBOL        h
+  D:0006H         SYMBOL        i
+  D:0005H         SYMBOL        j
+  D:0004H         SYMBOL        k
+  -------         ENDDO         
+  C:02B6H         LINE#         8
+  C:02B6H         LINE#         9
+  C:02B6H         LINE#         11
+  C:02B8H         LINE#         12
+  C:02BAH         LINE#         13
+  C:02BCH         LINE#         14
+  C:02C6H         LINE#         15
+BL51 BANKED LINKER/LOCATER V6.22                                                      12/10/2015  19:45:09  PAGE 6
+
+
+  -------         ENDPROC       DELAY1S
+  -------         PROC          INITTIMER0
+  C:02D8H         LINE#         17
+  C:02D8H         LINE#         18
+  C:02DBH         LINE#         19
+  C:02DEH         LINE#         20
+  C:02E1H         LINE#         21
+  C:02E3H         LINE#         22
+  C:02E5H         LINE#         23
+  C:02E7H         LINE#         24
+  -------         ENDPROC       INITTIMER0
+  -------         PROC          TIMER0INTERRUPT
+  C:0211H         LINE#         26
+  C:0215H         LINE#         28
+  C:0217H         LINE#         29
+  C:021CH         LINE#         30
+  C:021FH         LINE#         31
+  C:0222H         LINE#         32
+  C:0227H         LINE#         33
+  C:022CH         LINE#         35
+  C:022FH         LINE#         36
+  C:0232H         LINE#         37
+  C:0232H         LINE#         38
+  -------         ENDPROC       TIMER0INTERRUPT
+  -------         PROC          MAIN
+  -------         DO            
+  D:0016H         SYMBOL        i
+  -------         ENDDO         
+  C:02C7H         LINE#         39
+  C:02C7H         LINE#         40
+  C:02C7H         LINE#         42
+  C:02CAH         LINE#         44
+  C:02CDH         LINE#         45
+  C:02D0H         LINE#         47
+  C:02D0H         LINE#         48
+  C:02D0H         LINE#         49
+  C:02D3H         LINE#         50
+  C:02D6H         LINE#         51
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        MAIN
+
+  -------         MODULE        DS1302
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  D:0008H         PUBLIC        gsTimeCalendar
+  D:00A8H         PUBLIC        IE
+  C:02F7H         PUBLIC        ReadTime
+  D:00B8H         PUBLIC        IP
+  B:00B0H.6       PUBLIC        DS1302_CLK
+  C:028DH         PUBLIC        ReadCalendar
+  D:000EH         PUBLIC        gSetTime
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  B:00B0H.7       PUBLIC        DS1302_RST
+BL51 BANKED LINKER/LOCATER V6.22                                                      12/10/2015  19:45:09  PAGE 7
+
+
+  C:01DCH         PUBLIC        test
+  B:00A0H.1       PUBLIC        DS1302_IO
+  C:031EH         PUBLIC        _ReadDS1302
+  C:0273H         SYMBOL        ReceiveByte
+  C:0138H         PUBLIC        SetTimeCalendar
+  D:00C8H         PUBLIC        T2CON
+  C:01A6H         PUBLIC        DisplayTime
+  C:0313H         PUBLIC        _WriteDS1302
+  C:023DH         SYMBOL        _TransmitByte
+  C:009AH         PUBLIC        DisplayCalendar
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          DISPLAYTIME
+  C:01A6H         LINE#         25
+  C:01A6H         LINE#         26
+  C:01A6H         LINE#         27
+  C:01B3H         LINE#         28
+  C:01BFH         LINE#         29
+  C:01D0H         LINE#         30
+  -------         ENDPROC       DISPLAYTIME
+  -------         PROC          DISPLAYCALENDAR
+  C:009AH         LINE#         44
+  C:009AH         LINE#         45
+  C:009AH         LINE#         46
+  C:00A3H         LINE#         47
+  C:00ACH         LINE#         48
+  C:00B9H         LINE#         49
+  C:00C5H         LINE#         50
+  C:00D2H         LINE#         51
+  C:00DEH         LINE#         52
+  C:00EBH         LINE#         53
+  -------         ENDPROC       DISPLAYCALENDAR
+  -------         PROC          SETTIMECALENDAR
+  C:0138H         LINE#         65
+  C:0138H         LINE#         66
+  C:0138H         LINE#         67
+  C:013FH         LINE#         69
+  C:0146H         LINE#         70
+  C:014DH         LINE#         71
+  C:0154H         LINE#         72
+  C:015BH         LINE#         73
+  C:0162H         LINE#         74
+  C:0169H         LINE#         76
+  -------         ENDPROC       SETTIMECALENDAR
+  -------         PROC          READTIME
+  C:02F7H         LINE#         88
+  C:02F7H         LINE#         89
+  C:02F7H         LINE#         91
+  C:02FEH         LINE#         92
+  C:0305H         LINE#         93
+  -------         ENDPROC       READTIME
+  -------         PROC          READCALENDAR
+  C:028DH         LINE#         104
+  C:028DH         LINE#         105
+  C:028DH         LINE#         106
+  C:0294H         LINE#         107
+  C:029BH         LINE#         108
+  C:02A2H         LINE#         109
+BL51 BANKED LINKER/LOCATER V6.22                                                      12/10/2015  19:45:09  PAGE 8
+
+
+  -------         ENDPROC       READCALENDAR
+  -------         PROC          TEST
+  C:01DCH         LINE#         111
+  C:01DCH         LINE#         112
+  C:01DFH         LINE#         113
+  C:01ECH         LINE#         114
+  C:01F8H         LINE#         115
+  C:0205H         LINE#         116
+  -------         ENDPROC       TEST
+  -------         PROC          L?0021
+  -------         ENDPROC       L?0021
+  -------         PROC          _TRANSMITBYTE
+  D:0007H         SYMBOL        TByte
+  -------         DO            
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+  C:023DH         LINE#         128
+  C:023DH         LINE#         129
+  C:023DH         LINE#         131
+  C:023FH         LINE#         132
+  C:023FH         LINE#         133
+  C:0241H         LINE#         134
+  C:0245H         LINE#         135
+  C:0245H         LINE#         136
+  C:0247H         LINE#         137
+  C:0249H         LINE#         139
+  C:0249H         LINE#         140
+  C:024BH         LINE#         141
+  C:024BH         LINE#         142
+  C:024DH         LINE#         143
+  C:0251H         LINE#         144
+  C:0255H         LINE#         145
+  -------         ENDPROC       _TRANSMITBYTE
+  -------         PROC          RECEIVEBYTE
+  -------         DO            
+  D:0006H         SYMBOL        i
+  D:0007H         SYMBOL        RecByte
+  -------         ENDDO         
+  C:0273H         LINE#         157
+  C:0273H         LINE#         158
+  C:0273H         LINE#         160
+  C:0275H         LINE#         161
+  C:0275H         LINE#         162
+  C:0277H         LINE#         163
+  C:027BH         LINE#         164
+  C:027EH         LINE#         165
+  C:027EH         LINE#         166
+  C:0281H         LINE#         167
+  C:0283H         LINE#         169
+  C:0283H         LINE#         170
+  C:0286H         LINE#         171
+  C:0286H         LINE#         172
+  C:0288H         LINE#         173
+  C:028CH         LINE#         174
+  C:028CH         LINE#         175
+  -------         ENDPROC       RECEIVEBYTE
+  -------         PROC          _WRITEDS1302
+BL51 BANKED LINKER/LOCATER V6.22                                                      12/10/2015  19:45:09  PAGE 9
+
+
+  D:0007H         SYMBOL        Adr
+  D:0005H         SYMBOL        WByte
+  C:0313H         LINE#         188
+  C:0313H         LINE#         189
+  C:0313H         LINE#         190
+  C:0313H         LINE#         191
+  C:0313H         LINE#         192
+  C:0313H         LINE#         193
+  C:0316H         LINE#         194
+  C:031BH         LINE#         195
+  C:031DH         LINE#         196
+  -------         ENDPROC       _WRITEDS1302
+  -------         PROC          _READDS1302
+  D:0007H         SYMBOL        Adr
+  -------         DO            
+  D:0007H         SYMBOL        RByte
+  -------         ENDDO         
+  C:031EH         LINE#         209
+  C:031EH         LINE#         210
+  C:031EH         LINE#         212
+  C:031EH         LINE#         213
+  C:031EH         LINE#         214
+  C:031EH         LINE#         215
+  C:0321H         LINE#         216
+  C:0324H         LINE#         217
+  C:0326H         LINE#         218
+  C:0326H         LINE#         219
+  -------         ENDPROC       _READDS1302
+  -------         ENDMOD        DS1302
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DIGSHOWCUSTOM?DIGITRON
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DELAY1S?MAIN
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAYCALENDAR?DS1302
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?READCALENDAR?DS1302
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TEST?DS1302
+
+Program Size: data=25.1 xdata=0 code=799
+LINK/LOCATE RUN COMPLETE.  5 WARNING(S),  0 ERROR(S)

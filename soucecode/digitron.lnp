@@ -1,0 +1,6 @@
+"STARTUP.obj",
+"digitron.obj",
+"main.obj",
+"DS1302.obj" 
+TO "digitron" 
+RAMSIZE(256) 

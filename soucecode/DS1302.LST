@@ -1,0 +1,248 @@
+C51 COMPILER V9.52.0.0   DS1302                                                            12/10/2015 19:45:08 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE DS1302
+OBJECT MODULE PLACED IN DS1302.OBJ
+COMPILER INVOKED BY: D:\Program Files\IDE\KeilC51\C51\BIN\C51.EXE DS1302.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include "DS1302.h"
+   2          
+   3          extern unsigned char gDp;
+   4          
+   5          unsigned char gSetTime[]={0x15,0x12,0x09,0x18,0x54,0x00}; //初始时间数组13年01月02日11点14分00秒
+   6          struct
+   7          {
+   8              unsigned char Seconds;  // 秒
+   9              unsigned char Minutes;  // 分
+  10              unsigned char Hour;     // 时
+  11              unsigned char Date;     // 日
+  12              unsigned char Month;    // 月
+  13              unsigned char Year;     // 年
+  14          }gsTimeCalendar;
+  15          
+  16          /**********************************************
+  17          功能：
+  18              显示时间
+  19          输入参数：
+  20              无
+  21          输出参数：
+  22              无
+  23          返回值：
+  24          **********************************************/
+  25          void DisplayTime(void)
+  26          {
+  27   1          DigShowNumber(4,gsTimeCalendar.Hour>>4,0);
+  28   1          DigShowNumber(3,gsTimeCalendar.Hour&0x0f,0);
+  29   1          DigShowNumber(2,gsTimeCalendar.Minutes>>4,gDp);
+  30   1          DigShowNumber(1,gsTimeCalendar.Minutes&0x0f,0);
+  31   1          //DigShowNumber(3,gsTimeCalendar.Seconds>>4,0);
+  32   1          //DigShowNumber(2,gsTimeCalendar.Seconds&0x0f,0);
+  33   1      }
+  34          
+  35          /**********************************************
+  36          功能：
+  37              显示日期
+  38          输入参数：
+  39              无
+  40          输出参数：
+  41              无
+  42          返回值：
+  43          **********************************************/
+  44          void DisplayCalendar(void)
+  45          {
+  46   1          DigShowNumber(8,2,0);
+  47   1          DigShowNumber(7,0,0);
+  48   1          DigShowNumber(6,gsTimeCalendar.Year>>4,0);
+  49   1          DigShowNumber(5,gsTimeCalendar.Year&0x0f,1);
+  50   1          DigShowNumber(4,gsTimeCalendar.Month>>4,0);
+  51   1          DigShowNumber(3,gsTimeCalendar.Month&0x0f,1);
+  52   1          DigShowNumber(2,gsTimeCalendar.Date>>4,0);
+  53   1          DigShowNumber(1,gsTimeCalendar.Date&0x0f,0);
+  54   1      }
+  55          
+C51 COMPILER V9.52.0.0   DS1302                                                            12/10/2015 19:45:08 PAGE 2   
+
+  56          /**********************************************
+  57          功能：
+  58              设置时间和日期
+  59          输入参数：
+  60              无
+  61          输出参数：
+  62              无
+  63          返回值：
+  64          **********************************************/
+  65          void SetTimeCalendar(void)
+  66          {
+  67   1        WriteDS1302(ADR_W_WP,WP_OFF);           //关闭写保护功能，即允许对各寄存器进行写操作
+  68   1          
+  69   1        WriteDS1302(ADR_W_YEAR,gSetTime[0]);    //年
+  70   1        WriteDS1302(ADR_W_MONTH,gSetTime[1]);   //月
+  71   1        WriteDS1302(ADR_W_DATE,gSetTime[2]);    //日
+  72   1        WriteDS1302(ADR_W_HOUR,gSetTime[3]);    //时
+  73   1        WriteDS1302(ADR_W_MINUTES,gSetTime[4]); //分
+  74   1        WriteDS1302(ADR_W_SECONDS,gSetTime[5]); //秒
+  75   1          
+  76   1        WriteDS1302(ADR_W_WP,WP_ON);            //启动写保护功能，即禁止对各寄存器进行写操作
+  77   1      }
+  78          
+  79          /**********************************************
+  80          功能：
+  81              读取时间
+  82          输入参数：
+  83              无
+  84          输出参数：
+  85              无
+  86          返回值：
+  87          **********************************************/
+  88          void ReadTime(void)
+  89          {
+  90   1          //gsTimeCalendar.Seconds = ReadDS1302(ADR_R_SECONDS);   //读取秒
+  91   1          gsTimeCalendar.Minutes = ReadDS1302(ADR_R_MINUTES);   //读取分
+  92   1          gsTimeCalendar.Hour    = ReadDS1302(ADR_R_HOUR);      //读取时
+  93   1      }
+  94          
+  95          /**********************************************
+  96          功能：
+  97              读取日期
+  98          输入参数：
+  99              无
+ 100          输出参数：
+ 101              无
+ 102          返回值：
+ 103          **********************************************/
+ 104          void ReadCalendar(void)
+ 105          {
+ 106   1          gsTimeCalendar.Date  = ReadDS1302(ADR_R_DATE);      //读取日
+ 107   1          gsTimeCalendar.Month = ReadDS1302(ADR_R_MONTH);   //读取月
+ 108   1          gsTimeCalendar.Year  = ReadDS1302(ADR_R_YEAR);      //读取年
+ 109   1      }
+ 110          
+ 111          void test(void){
+ 112   1        gsTimeCalendar.Hour = 0x15;
+ 113   1          DigShowNumber(4,gsTimeCalendar.Hour>>4,0);
+ 114   1          DigShowNumber(3,gsTimeCalendar.Hour&0x0f,1);
+ 115   1          DigShowNumber(2,gsTimeCalendar.Minutes>>4,0);
+ 116   1          DigShowNumber(1,gsTimeCalendar.Minutes&0x0f,1);
+ 117   1      }
+C51 COMPILER V9.52.0.0   DS1302                                                            12/10/2015 19:45:08 PAGE 3   
+
+ 118          
+ 119          /**********************************************
+ 120          功能：
+ 121              向DS1302发送一个字节
+ 122          输入参数：
+ 123              TByte:发送的字节
+ 124          输出参数：
+ 125              无
+ 126          返回值：
+ 127          **********************************************/
+ 128          static void TransmitByte(unsigned char TByte)
+ 129          {
+ 130   1          unsigned char i;
+ 131   1          for(i = 0;i < 8;i++)
+ 132   1          {
+ 133   2          DS1302_CLK = 0;
+ 134   2              if(TByte&0x01)
+ 135   2              {
+ 136   3                  DS1302_IO = 1;
+ 137   3              }
+ 138   2              else
+ 139   2              {
+ 140   3                  DS1302_IO = 0;
+ 141   3              }
+ 142   2              DS1302_CLK = 1;
+ 143   2              TByte >>= 1;
+ 144   2          }
+ 145   1      }
+ 146          
+ 147          /**********************************************
+ 148          功能：
+ 149              从DS1302接收一个字节
+ 150          输入参数：
+ 151              无
+ 152          输出参数：
+ 153              无
+ 154          返回值：
+ 155              RecByte:从DS1302所接收到的字节
+ 156          **********************************************/
+ 157          static unsigned char ReceiveByte(void)
+ 158          {
+ 159   1          unsigned char i,RecByte;
+ 160   1          for(i = 0;i < 8;i++)
+ 161   1          {
+ 162   2          DS1302_CLK = 0;
+ 163   2              RecByte >>= 1;
+ 164   2              if(DS1302_IO)
+ 165   2              {
+ 166   3                  RecByte |= 0x80;
+ 167   3              }
+ 168   2              else
+ 169   2              {
+ 170   3                  RecByte &= ~0x80;
+ 171   3              }
+ 172   2              DS1302_CLK = 1;
+ 173   2          }
+ 174   1          return(RecByte);
+ 175   1      }
+ 176          
+ 177          /**********************************************
+ 178          功能：
+ 179              写一字节数据到DS1302某地址
+C51 COMPILER V9.52.0.0   DS1302                                                            12/10/2015 19:45:08 PAGE 4   
+
+ 180          输入参数：
+ 181              Adr：寄存器地址
+ 182              WByte：要写到对应地址的字节
+ 183          输出参数：
+ 184              无
+ 185          返回值：
+ 186              无
+ 187          **********************************************/
+ 188          void WriteDS1302(unsigned char Adr, unsigned char WByte)   //往Adr地址中写入数据WByte
+ 189          {
+ 190   1        DS1302_RST = 0;  //看时序，RST开始为低电平
+ 191   1        DS1302_CLK = 0;  //CLK开始也为低电平
+ 192   1        DS1302_RST = 1;   //RST在高电平，才可以进行通讯。
+ 193   1        TransmitByte(Adr);  //先写地址
+ 194   1        TransmitByte(WByte);  //往刚刚的地址中写入数据
+ 195   1        DS1302_RST = 0;    //写完一次数据，RST拉低。
+ 196   1      }
+ 197          
+ 198          
+ 199          /**********************************************
+ 200          功能：
+ 201              从DS1302某地址读一字节数据
+ 202          输入参数：
+ 203              Adr：寄存器地址
+ 204          输出参数：
+ 205              无
+ 206          返回值：
+ 207              从DS1302所读取的字节
+ 208          **********************************************/
+ 209          unsigned char ReadDS1302(unsigned char Adr)
+ 210          {
+ 211   1        unsigned char RByte;
+ 212   1        DS1302_RST = 0;
+ 213   1        DS1302_CLK = 0;
+ 214   1        DS1302_RST = 1;
+ 215   1        TransmitByte(Adr);
+ 216   1        RByte = ReceiveByte();
+ 217   1        DS1302_RST = 0;
+ 218   1        return(RByte);
+ 219   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    370    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     12    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

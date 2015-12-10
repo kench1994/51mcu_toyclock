@@ -1,0 +1,52 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+D:\WorkSpace\github\51mcu_toyclock\soucecode\digitron.uvproj
+Project File Date:  12/09/2015
+
+<h2>Output:</h2>
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling digitron.c...
+compiling main.c...
+main.c(41): warning C280: 'i': unreferenced local variable
+compiling DS1302.c...
+compiling DS1302_drv.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DIGSHOWCUSTOM?DIGITRON
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DELAY1S?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAYCALENDAR?DS1302
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?READCALENDAR?DS1302
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TEST?DS1302
+Program Size: data=25.1 xdata=0 code=799
+creating hex file from "digitron"...
+"digitron" - 0 Error(s), 6 Warning(s).
+Clean started: Project: 'digitron'
+   deleting intermediate output files for target 'Target 1'
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling digitron.c...
+compiling main.c...
+main.c(41): warning C280: 'i': unreferenced local variable
+compiling DS1302.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DIGSHOWCUSTOM?DIGITRON
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DELAY1S?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAYCALENDAR?DS1302
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?READCALENDAR?DS1302
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TEST?DS1302
+Program Size: data=25.1 xdata=0 code=799
+creating hex file from "digitron"...
+"digitron" - 0 Error(s), 6 Warning(s).

@@ -1,0 +1,159 @@
+C51 COMPILER V9.52.0.0   DIGITRON                                                          12/10/2015 19:45:08 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE DIGITRON
+OBJECT MODULE PLACED IN digitron.OBJ
+COMPILER INVOKED BY: D:\Program Files\IDE\KeilC51\C51\BIN\C51.EXE digitron.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include "digitron.h"
+   2          
+   3          code unsigned char Segment[] = {0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};  // 数字段码，Segment[
+             -0]~Segment[9]分别对应数字0~9的段码
+   4          code unsigned char Select[] = {0xff,0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80};  // 位选，Select[0]为全选，S
+             -elect[1]~Select[8]分别对应第1位（最右侧）~第8位（最左侧）
+   5          
+   6          /**********************************************
+   7          功能：
+   8              输出位选字节和段码字节到74HC595
+   9          输入参数：
+  10              SelectByte:  位选字节
+  11              SegmentByte: 段码字节
+  12          输出参数：
+  13              无
+  14          返回值：
+  15          **********************************************/
+  16          void DigOutput(unsigned char SelectByte, unsigned char SegmentByte)
+  17          {
+  18   1          unsigned char i;
+  19   1          
+  20   1        DIG_SHCP = 0;   // 74HC595的移位脉冲引脚输出低电平
+  21   1        DIG_STCP = 0;   // 74HC595的锁存脉冲引脚输出低电平
+  22   1          
+  23   1          /* 将段码字节（共8位，高位在前）移入74HC595芯片 */
+  24   1        for(i=0; i<8; i++)
+  25   1        {
+  26   2              /* 判断数据的最高位，如果最高位是1，数据引脚输出高电平；如果是0，输出低电平 */
+  27   2            if(SegmentByte&0x80)
+  28   2              {
+  29   3                DIG_DATA = 1;
+  30   3              }
+  31   2          else
+  32   2              {
+  33   3              DIG_DATA = 0;
+  34   3              }
+  35   2          _nop_();
+  36   2              /* 输出74HC595芯片的数据移位脉冲，每输出一个移位脉冲，74HC595内部的数据移动一位 */
+  37   2          DIG_SHCP = 1;
+  38   2          _nop_();
+  39   2          DIG_SHCP = 0;
+  40   2          _nop_();
+  41   2              /* 要输出的数据左移一位，即为下一位数据的输出作准备 */
+  42   2          SegmentByte <<= 1;
+  43   2        }
+  44   1          /* 将位选字节（共8位，高位在前）移入74HC595芯片 */
+  45   1        for(i=0; i<8; i++)
+  46   1        {
+  47   2            if(SelectByte&0x80)
+  48   2              {
+  49   3                DIG_DATA = 1;
+  50   3              }    
+  51   2          else
+  52   2              {
+  53   3              DIG_DATA = 0;
+C51 COMPILER V9.52.0.0   DIGITRON                                                          12/10/2015 19:45:08 PAGE 2   
+
+  54   3              }
+  55   2          _nop_();
+  56   2          DIG_SHCP = 1;
+  57   2          _nop_();
+  58   2          DIG_SHCP = 0;
+  59   2          _nop_();
+  60   2          SelectByte <<= 1;
+  61   2        }
+  62   1          /* 输出74HC595芯片的数据锁存脉冲，即将74HC595芯片接收到的最新数据输出到芯片的所有数据引脚 */
+  63   1        DIG_STCP = 1;
+  64   1        _nop_();
+  65   1        DIG_STCP = 0;
+  66   1        _nop_();
+  67   1      }
+  68          
+  69          
+  70          /**********************************************
+  71          功能：
+  72              在某位显示自定义段码
+  73          输入参数：
+  74              DigSelect: 数码管位选择（1——8，即最右到最左）
+  75              CustomSeg: 自定义段码值
+  76          输出参数：
+  77              无
+  78          返回值：
+  79          **********************************************/
+  80          void DigShowCustom(unsigned char DigSelect, unsigned char CustomSeg)
+  81          {
+  82   1          if(0<DigSelect<9)
+  83   1          {
+  84   2              DigOutput(Select[DigSelect],CustomSeg);
+  85   2          }
+  86   1      }
+  87          
+  88          /**********************************************
+  89          功能：
+  90              在某位显示数字
+  91          输入参数：
+  92              DigSelect: 数码管位选择（1——8，即最右到最左）
+  93              Number:    数字（0——9）
+  94              Dp:        小数点（1:显示；0:不显示）
+  95          输出参数：
+  96              无
+  97          返回值：
+  98          **********************************************/
+  99          void DigShowNumber(unsigned char DigSelect, unsigned char Number, bit Dp)
+ 100          {
+ 101   1          if((0<DigSelect<9)&&(Number<10))
+ 102   1          {
+ 103   2              if(Dp)
+ 104   2            {
+ 105   3                  DigOutput(Select[DigSelect],(Segment[Number]&~0x80));
+ 106   3            }
+ 107   2            else
+ 108   2            {
+ 109   3                  DigOutput(Select[DigSelect],(Segment[Number]|0x80));
+ 110   3            }
+ 111   2          }
+ 112   1      }
+ 113          
+ 114          
+ 115          /**********************************************
+C51 COMPILER V9.52.0.0   DIGITRON                                                          12/10/2015 19:45:08 PAGE 3   
+
+ 116          功能：
+ 117              初始化数码管，使数码管全灭
+ 118          输入参数：
+ 119              无
+ 120          输出参数：
+ 121              无
+ 122          返回值：
+ 123          **********************************************/
+ 124          void DigInit(void)
+ 125          {
+ 126   1          DIG_DATA = 0;
+ 127   1          DIG_SHCP = 0;
+ 128   1          DIG_STCP = 0;
+ 129   1          DigOutput(0x00,0xff);
+ 130   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    161    ----
+   CONSTANT SIZE    =     19    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
